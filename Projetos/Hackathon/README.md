@@ -1,0 +1,1 @@
+Projeto criado para apresentação de um pitch em uma hackathon:
