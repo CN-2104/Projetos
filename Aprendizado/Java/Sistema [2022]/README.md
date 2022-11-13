@@ -1,0 +1,2 @@
+Arquivos feitos durante a aula de Linguagem de Programação
+- Um sistema de um comércio com leitura de barcode (feito pelo sensor conectado a usb) e conectado a um banco de dados para verificação dos produtos.
