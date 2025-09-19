@@ -2,6 +2,12 @@
 #include <string.h>
 #include <ctype.h>
 
+// Constants - Define all magic numbers
+#define MAX_STRING_SIZE 1000
+#define MAX_GRUPO_SIZE 10 // (usp ou externa)
+#define MAX_NOME_SIZE 1000
+#define MAX_PEOPLE 80000
+
 int count_chars(char str[]){
     //printf("String: %s\n", str);
     int count = 0;
@@ -24,16 +30,22 @@ int rec_count_chars(char str[], int index){
     return rec_count_chars(str, index + 1);
 }
 
-void Separa_grupos(int usp[], int* iusp, int ext[],  int* iext, char str[]){
+void Separa_grupos(char usp[], int* iusp, char ext[],  int* iext, char str[]){
     int i = 0;
-    char grupo[100] = {0};
+    char grupo[MAX_GRUPO_SIZE] = {0};
     memset(grupo, 0, sizeof(grupo)); // Inicializa o array grupo com zeros
     int len = strlen(str);
 
     while(str[i] != '\0'){
         if(str[i] == '-'){
-            strncpy(grupo, str+i+2, len-i-3); // +2 para pular o '-' e o espaço, e -3 para não pegar o '\n'
-            grupo[len-i-3] = '\0'; // Adiciona o terminador nulo se eu tirei ele acima
+            int grupo_len;
+            if(str[len-1] == '\n'){
+                grupo_len = len-i-3; // para remover o '\n' no final da string
+            }else{
+                grupo_len = len-i-2;
+            }
+            strncpy(grupo, str+i+2, grupo_len);
+            grupo[grupo_len] = '\0';
             break;
         }
         i++;
@@ -47,41 +59,72 @@ void Separa_grupos(int usp[], int* iusp, int ext[],  int* iext, char str[]){
     printf("Nome: %s\n", nome);
     */
     //printf("%d\n",strcmp(grupo, "usp"));
-    char nome[100] = {0};
+    char nome[MAX_NOME_SIZE] = {0};
     strncpy(nome, str, i-1); // -1 para não pegar o espaço antes do '-'
     nome[i] = '\0';
-    int tam_nome = rec_count_chars(nome, 0);
+    int tam_nome = count_chars(nome);
     if(strcmp(grupo, "usp") == 0){
         //printf("%d\n", tam_nome);
-        usp[*iusp] = tam_nome;
+        usp[*iusp] = (char)tam_nome;
         (*iusp)++;
         //printf("USP");
-    }else {
-        ext[*iext] = tam_nome;
+    }else{
+        ext[*iext] = (char)tam_nome;
         (*iext)++;
     }
+}
 
+void bubble_sort(char *arr, int size, int *comp, int *mov){
+    *comp = 0;
+    *mov = 0;
+    for(int i = 0;i<size-1;i++){
+        for (int j = 0;j<size-i-1;j++){
+            if(arr[j] > arr[j+1]){
+                char temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                (*mov)++;
+            }
+            (*comp)++;
+        }
+    }
 }
 
 int main() {
-    char str[100];
-    int usp[100];
-    int ext[100];
+    char str[MAX_STRING_SIZE];
+    char usp[MAX_PEOPLE];
+    char ext[MAX_PEOPLE];
     int iusp = 0, iext = 0;
-    while (fgets(str,100,stdin)) {
+    int comp = 0, mov = 0;
+    while (fgets(str,sizeof(str),stdin)) {
         Separa_grupos(usp, &iusp, ext, &iext, str);
         memset(str, 0, sizeof(str)); // Limpa a string para a próxima leitura
     }
 
-    printf("USP - [%d", usp[0]);
-    for(int i = 1;i<iusp;i++){
-        printf(", %d", usp[i]);
+    bubble_sort(usp, iusp, &comp, &mov);
+    if(iusp > 0) {
+        printf("USP - [%d", usp[0]);
+        for(int i = 1;i<iusp;i++){
+            printf(", %d", usp[i]);
+        }
+        printf("]\n");
+        printf("Comparações: %d, Trocas: %d\n", comp, mov);
+    } else {
+        printf("USP - []\n");
+        printf("Comparações: 0, Trocas: 0\n");
     }
-    printf("]\n");
 
-    printf("Externa - [%d", ext[0]);
-    for(int i = 1;i<iext;i++){
-        printf(", %d", ext[i]);
+    printf("\n");
+    bubble_sort(ext, iext, &comp, &mov);
+    if(iext > 0) {
+        printf("Externa - [%d", ext[0]);
+        for(int i = 1;i<iext;i++){
+            printf(", %d", ext[i]);
+        }
+        printf("]\n");
+        printf("Comparações: %d, Trocas: %d\n", comp, mov);
+    } else {
+        printf("Externa - []\n");
+        printf("Comparações: 0, Trocas: 0\n");
     }
-    printf("]\n");
 }
