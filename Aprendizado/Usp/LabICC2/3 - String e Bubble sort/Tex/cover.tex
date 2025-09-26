@@ -1,0 +1,51 @@
+% cover.tex
+% Uses macros from covermacros.tex
+
+\begin{center}
+  {\small\itshape \titleEntrega}\\[-6pt]               % small text and small gap
+  {\color{line}\rule{1\textwidth}{0.3pt}}             % colored thin rule (shorter)
+\end{center}
+
+\bigskip
+
+% Left logo, right-aligned text on same baseline
+\noindent
+\begin{minipage}[c]{0.24\textwidth}
+  % FIX: Replaced your logo with a placeholder. Change back to 'usp_logo.png'
+  \includegraphics[width=0.65\linewidth]{usp_logo.png} 
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.72\textwidth}
+  \begin{flushright}
+    \textbf{\institute} \\[0.12cm]
+    \department \\[0.12cm]
+    \course \\[0.12cm]
+    \classinfo
+  \end{flushright}
+\end{minipage}
+
+\vspace{0.3cm}
+
+% === Rounded box with TikZ shadow ===
+\begin{center}
+\begin{tikzpicture}
+  % main box node; minimum width controls length. Adjust inner sep for height.
+  \node[anchor=south west, rounded corners=3mm, fill=uspblue, text=white,
+        inner sep=7mm, minimum width=0.9\textwidth] (box) at (0,0)
+  {%
+    \begin{minipage}{0.92\textwidth}
+      \centering
+      {\Large\itshape \titleEntrega} \\[6pt]
+      {\textbf{Nome: \studentname{} --- Nº USP: \nusp}} \\[4pt]
+      {\textbf{Data: \duedate}}
+    \end{minipage}
+  };
+
+  % draw the shadow beneath (uses drawshadow macro from covermacros.tex)
+  \drawshadow{box}
+
+  % optional faint outline for the box (subtle)
+  \draw[rounded corners=3mm, line width=0.05pt, draw=black!10]
+    (box.north west) rectangle (box.south east);
+\end{tikzpicture}
+\end{center}

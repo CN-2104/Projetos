@@ -1,0 +1,70 @@
+% covermacros.tex
+% Colors, user macros and TikZ shadow routine
+
+% load TikZ (we put it here so main.tex is lean)
+\usepackage{tikz}
+\usetikzlibrary{shadows,calc}
+
+% ---------- user-editable fields ----------
+\newcommand{\titleEntrega}{Entrega 3.2}
+\newcommand{\studentname}{Christyan Paniago Nantes}
+\newcommand{\nusp}{15635906}
+\newcommand{\duedate}{25/09/2025}
+\newcommand{\institute}{Instituto De Ciências Matemáticas e de Computação}
+\newcommand{\department}{Departamento de Ciências de Computação}
+\newcommand{\course}{SCC0220 - Laboratório de Introdução à Ciência da Computação II}
+\newcommand{\classinfo}{Turma BCC -- Prof. Jean Roberto Ponciano}
+% ------------------------------------------
+
+% colors (made here so cover.tex can use them)
+\definecolor{uspblue}{RGB}{0,174,239}
+\definecolor{line}{RGB}{136,184,227}
+\definecolor{titleblue}{RGB}{15,111,198} % ADDED: New color for the activity title
+
+% ---------- shadow parameters (tweak if needed) ----------
+% xshift (right), yshift (down) for the shadow
+\def\shadowshift{3pt,-3pt}    % Tighter offset
+\def\shadowradius{6pt}        % Sharper blur
+\colorlet{innercolor}{black!25} 
+\colorlet{outercolor}{black!3}  
+% -----------------------------------------------------
+
+% drawshadow: draws a soft rounded shadow for a node name #1
+\newcommand\drawshadow[1]{%
+  \begin{pgfonlayer}{shadow}%
+    \shade[inner color=innercolor, outer color=outercolor]
+      ($(#1.south west)+(\shadowshift)+(\shadowradius/2,\shadowradius/2)$) circle (\shadowradius);
+    \shade[inner color=innercolor, outer color=outercolor]
+      ($(#1.north west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$) circle (\shadowradius);
+    \shade[inner color=innercolor, outer color=outercolor]
+      ($(#1.south east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$) circle (\shadowradius);
+    \shade[inner color=innercolor, outer color=outercolor]
+      ($(#1.north east)+(\shadowshift)+(-\shadowradius/2,-\shadowradius/2)$) circle (\shadowradius);
+    \shade[top color=innercolor, bottom color=outercolor]
+      ($(#1.south west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$)
+      rectangle
+      ($(#1.south east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$);
+    \shade[left color=innercolor, right color=outercolor]
+      ($(#1.south east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$)
+      rectangle
+      ($(#1.north east)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$);
+    \shade[bottom color=innercolor, top color=outercolor]
+      ($(#1.north west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$)
+      rectangle
+      ($(#1.north east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$);
+    \shade[right color=innercolor, left color=outercolor]
+      ($(#1.south west)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$)
+      rectangle
+      ($(#1.north west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$);
+    
+    % Replaced the solid \fill with a \shade to create a soft gradient core
+    \shade[top color=innercolor, bottom color=innercolor]
+      ($(#1.south west)+(\shadowshift)+(\shadowradius/2,\shadowradius/2)$)
+      rectangle
+      ($(#1.north east)+(\shadowshift)-(\shadowradius/2,\shadowradius/2)$);
+  \end{pgfonlayer}%
+}%
+
+% declare the shadow layer (so it draws under main content)
+\pgfdeclarelayer{shadow}
+\pgfsetlayers{shadow,main}

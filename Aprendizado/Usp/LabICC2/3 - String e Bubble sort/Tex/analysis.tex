@@ -1,0 +1,76 @@
+% analysis.tex
+% Contém a análise detalhada do algoritmo Bubble Sort para o relatório.
+
+\section{Análise do Algoritmo Bubble Sort}
+
+\subsection{Descrição do Funcionamento}
+O Bubble Sort funciona percorrendo repetidamente uma lista, comparando cada par de elementos adjacentes e trocando-os de posição se estiverem na ordem errada. Esse processo é repetido até que nenhuma troca seja necessária em uma passagem completa pela lista, o que indica que a lista está ordenada. O nome "bolha" vem da forma como os elementos menores "flutuam" \space para o topo (início) da lista a cada iteração, como bolhas de ar. \\
+Esse algoritmo é um de mais fácil visualização e implementação, mas ele vem com um custo grande de processamento, sendo um dos menos eficientes.
+
+\subsection{Código da Implementação}
+O código em C utilizado para a ordenação dos dados nos grupos "USP" e "Externa" é apresentado abaixo. A função `bubble sort` recebe um array de caracteres, seu tamanho e ponteiros para as variáveis de contagem de comparações e trocas.
+
+\begin{lstlisting}[style=CStyle, caption={Função bubble\_sort implementada em C.}, label={lst:bubble}]
+void bubble_sort(char *arr, int size, int *comp, int *mov){
+    *comp = 0;
+    *mov = 0;
+    for(int i = 0;i<size-1;i++){
+        for (int j = 0;j<size-i-1;j++){
+            if(arr[j] > arr[j+1]){
+                char temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                (*mov)++;
+            }
+            (*comp)++;
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection{Análise Crítica de Desempenho}
+A seguir, analisamos o desempenho do algoritmo com base nos testes realizados na plataforma Run.codes e na teoria dos algoritmos.
+
+\subsubsection{Dados Experimentais}
+Os dados completos de tempo de execução, número de entradas, comparações e trocas para cada caso de teste são apresentados na Tabela 1. Os valores de comparações e trocas são apresentados para os grupos (USP, Externo) respectivamente.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|r|r|l|l|}
+\hline
+\textbf{Caso} & \textbf{Nº Entradas} & \textbf{CPU Time} & \textbf{Comparações} & \textbf{Trocas} \\ \hline
+Caso 1 & 5 & 0.0012 s & (1, 3) & (1, 0) \\ \hline
+Caso 2 & 1.000 & 0.0019 s & (124.750, 124.750) & (63.398, 61.382) \\ \hline
+Caso 3 & 25.000 & 0.4614 s & (78.118.750, 78.118.750) & (38.775.116, 38.510.620) \\ \hline
+Caso 4 & 50.000 & 2.0321 s & (312.487.500, 312.487.500) & (154.886.474, 154.156.258) \\ \hline
+Caso 5 & 75.000 & 2.2390 s & (703.106.250, 703.106.250) & (0, 0) \\ \hline
+\end{tabular}
+\caption{Resultados experimentais completos para cada caso de teste.}
+\label{tab:dados_completos}
+\end{table}
+
+\vspace{3cm}
+
+
+\subsubsection{Análise dos Cenários}
+A análise dos dados da Tabela 1 permite uma interpretação precisa do comportamento do algoritmo.
+
+\begin{itemize}
+    \item \textbf{Melhor Caso (Lista Ordenada):} O \textbf{Caso 5} representa perfeitamente o melhor caso. Embora tenha o maior tempo de CPU devido ao volume de dados (75.000 entradas), o número de trocas é \textbf{zero}. Isso indica que a lista já estava ordenada. A implementação atual do Bubble Sort, por não ter uma otimização para parar caso nenhuma troca ocorra, ainda assim executa o número máximo de comparações ($O(n^2)$), explicando o grande tempo de execução.
+
+    \item \textbf{Pior Caso (Lista Inversamente Ordenada):} Nenhum dos casos significativos aparenta representar um pior caso clássico, que exigiria um número de trocas quase igual ao de comparações. O \textbf{Caso 1} para o grupo USP (1 comparação, 1 troca) sugere um pequeno vetor em ordem inversa.
+    
+    \item \textbf{Caso Médio (Lista Aleatória):} Os \textbf{Casos 2, 3 e 4} são exemplos claros do caso médio. Eles apresentam um alto número de comparações e um número de trocas significativo, característico de dados em ordem aleatória. A complexidade $O(n^2)$ é evidente na transição do Caso 3 para o Caso 4: ao dobrar o número de entradas (de 25k para 50k), o tempo de execução aumentou aproximadamente 4.4 vezes, reforçando a relação quadrática.
+\end{itemize}
+
+\subsubsection{Otimização de Memória e Impacto no Cache (`char` vs. `int`)}
+Uma adaptação crucial para que a solução fosse aprovada nos limites de tempo da plataforma foi a utilização de um array de `char` em vez de `int` para armazenar os dados a serem ordenados. Essa decisão tem um impacto direto e significativo na performance devido a detalhes peculiares do CPU.
+\\
+Um `char` ocupa, tipicamente, 1 byte de memória, enquanto um `int` ocupa 4 bytes. Para um volume grande de dados, como o do Caso 5 (75.000 entradas), essa diferença é substancial, essa economia de memória se traduz em velocidade por causa do \textbf{cache da CPU}.
+
+\subsubsection{Discussão sobre a Implementação}
+\begin{itemize}
+    \item \textbf{Simplicidade do Código:} A implementação é um dos pontos fortes do Bubble Sort. Como visto no código, ela requer apenas dois laços aninhados e uma lógica de troca simples. Isso a torna muito fácil de entender, implementar e depurar, sendo uma ótima escolha para fins didáticos ou para ordenar listas muito pequenas onde a performance não é um dos pontos principais.
+
+    \item \textbf{Uso de Funções Auxiliares:} A solução de ordenação é autocontida e não utiliza funções auxiliares para a ordenação. Todo o processo está encapsulado na função `bubble sort`. As variáveis de contagem (`comp` e `mov`) são passadas por referência, para podermos salvar a quantidade de movimentações e comparações em um lugar externo à função
+\end{itemize}

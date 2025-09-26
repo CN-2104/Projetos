@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}        % better font encoding for pdflatex
+\usepackage{lmodern}            % nicer default font (works with pdflatex)
+\usepackage{graphicx}           % Required for inserting images
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{titling}
+\usepackage{ragged2e}
+\usepackage{microtype}          % Improves typography and justification
+\usepackage{enumitem}           % For better control over list environments
+\usepackage{caption}            % To customize captions
+
+% Page setup
+\geometry{top=1cm, bottom=2cm, left=2.5cm, right=2.5cm}
+
+% ---- load cover macros (colors, tikz shadow routine, user macros) ----
+\input{covermacros}
+
+% (You can keep tcolorbox if you use it elsewhere; not used for the cover here)
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable,raster}
+
+% Remove the "Listing X:" prefix from the code block caption
+\captionsetup[lstlisting]{labelformat=empty,textformat=simple}
+
+% --- Custom Colors ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codered}{rgb}{0.6,0,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{delimiterscolor}{RGB}{255,0,58}
+\definecolor{numberscolor}{RGB}{240,0,240}
+\definecolor{asmdirective}{rgb}{0.5,0,0.5} % Purple for asm registers
+
+% --- Style for C Code ---
+\lstdefinestyle{CStyle}{
+  language=C,
+  backgroundcolor=\color{gray!10},
+  basicstyle=\ttfamily\small,
+  keywordstyle=[1]{\color{blue}\bfseries},
+  keywordstyle=[2]{\color{codered}\bfseries},
+  commentstyle=\color{codegreen}\itshape,
+  stringstyle=\color{codered},
+  deletekeywords={int, char, void, for, if},
+  morekeywords={int, char, void, double, float, long, short},
+  morekeywords=[2]{for, if, else, while, do, switch, case, return, break},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  frame=single,
+  rulecolor=\color{black},
+  breaklines=true,
+  tabsize=4,
+  showstringspaces=false,
+  captionpos=b,
+  literate=
+    *{0}{{{\color{numberscolor}0}}}{1}
+     {1}{{{\color{numberscolor}1}}}{1}
+     {2}{{{\color{numberscolor}2}}}{1}
+     {3}{{{\color{numberscolor}3}}}{1}
+     {4}{{{\color{numberscolor}4}}}{1}
+     {5}{{{\color{numberscolor}5}}}{1}
+     {6}{{{\color{numberscolor}6}}}{1}
+     {7}{{{\color{numberscolor}7}}}{1}
+     {8}{{{\color{numberscolor}8}}}{1}
+     {9}{{{\color{numberscolor}9}}}{1}
+     {(}{{{\color{delimiterscolor}(}}}{1}
+     {)}{{{\color{delimiterscolor})}}}{1}
+     {[}{{{\color{delimiterscolor}[}}}{1}
+     {]}{{{\color{delimiterscolor}]}}}{1}
+     {\{}{{{\color{delimiterscolor}\{}}}{1}
+     {\}}{{{\color{delimiterscolor}\}}}}{1}
+     {+}{{{\color{delimiterscolor}+}}}{1}
+     {-}{{{\color{delimiterscolor}-}}}{1}
+     {&}{{{\color{delimiterscolor}\&}}}{1}
+}
+
+% --- Style for Assembly Code ---
+\lstdefinestyle{AsmStyle}{
+  language=[x86masm]Assembler,
+  backgroundcolor=\color{gray!10},
+  basicstyle=\ttfamily\scriptsize, % Smaller font for long assembly
+  keywordstyle=\color{blue},          % Instructions
+  keywordstyle=[2]{\color{asmdirective}}, % Registers/Directives
+  commentstyle=\color{codegreen}\itshape,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  frame=single,
+  rulecolor=\color{black},
+  breaklines=true,
+  tabsize=4,
+  morekeywords=[2]{rbp, rsp, rdi, rsi, rdx, rcx, rax, edx, eax, al, dl, BYTE, QWORD, DWORD, PTR} % Group 2 (purple)
+}
+
+
+\begin{document}
+
+% Include the cover (cover.tex should be in the same folder)
+\input{cover}
+
+% Include the activity description on the first page
+\input{activity_description.tex}
+
+% --- Start your report here ---
+\newpage
+\section{Introdução}
+Este relatório apresenta a implementação e a análise de desempenho do algoritmo de ordenação Bubble Sort. O objetivo é discutir seu funcionamento, eficiência em diferentes cenários e a simplicidade de sua implementação, utilizando dados de tempo de execução obtidos experimentalmente.
+
+% Input the analysis file
+\input{analysis.tex}
+
+
+\end{document}

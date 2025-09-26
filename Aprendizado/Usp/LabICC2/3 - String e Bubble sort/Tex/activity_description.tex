@@ -1,0 +1,45 @@
+% activity_description.tex
+% A simplified, clean layout for the activity description.
+
+\vspace{0.5cm} % Adjust this space to position the section vertically on the page
+
+% --- Title ---
+% We use \parbox to keep the title and the rule together.
+\noindent\parbox{\linewidth}{
+    {\color{titleblue}\LARGE\bfseries A. Descrição da atividade}
+    \vspace{2mm} % Space between title and the line
+    
+    % A thin, lighter-blue horizontal rule
+    %\noindent\color{titleblue!50}\rule{\linewidth}{0.6pt}
+}
+
+\bigskip % Space after the title section
+
+% --- Body Text ---
+%\begin{raggedright} % Aligns text to the left for better readability
+Com os inscritos de cada comunidades separados, agora é necessário realizar a organização deles. \\
+Para isso, os inscritos de cada comunidade devem ser ordenados pelo tamanho dos seus nomes (número de caracteres,desconsiderando espaços em branco). 
+Você deve implementar o algoritmo \textbf{Bubble Sort}, para ordenar os inscritos de cada comunidade
+
+\medskip % A little vertical space
+
+\noindent\textbf{No relatório deve estar presente:}
+\begin{itemize}
+    \setlength\itemsep{0.2em} % Adjust spacing between list items
+    \item Descrição sucinta do funcionamento do algoritmo Bubble Sort.
+    \item Código da implementação da sua solução
+    \item Análise crítica de desempenho do algoritmo, discutindo:
+    \begin{itemize}
+        \item Tempo de execução medido no Run.codes \textbf{(CPU time)}.
+        \item Número de comparações e trocas.
+        \item Três cenários distintos:
+        \begin{itemize}
+            \item \textbf{Melhor caso:} lista já ordenada
+            \item \textbf{Pior caso:} lista ordenada de forma inversa.
+            \item \textbf{Caso médio:} lista em ordem aleatória.
+        \end{itemize}
+        \item Discussão sobre simplicidade do código e uso de funções auxiliares
+    \end{itemize}
+\end{itemize}
+
+%\end{raggedright}
